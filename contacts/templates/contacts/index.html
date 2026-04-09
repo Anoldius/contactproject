@@ -1,32 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Contacts</title>
+    <meta charset="UTF-8">
+    <title>My Contacts | Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background-color: #f4f7f6; }
+        .card { border: none; border-radius: 12px; }
+        .btn-success { border-radius: 8px; font-weight: 600; }
+        .list-group-item { border: none; margin-bottom: 8px; border-radius: 10px !important; }
+    </style>
 </head>
-<body class="bg-light"> <div class="container mt-5"> <div class="row justify-content-center">
-            <div class="col-md-6"> <div class="card shadow p-4 mb-4"> <h3 class="text-primary mb-3">Add New Contact</h3>
+<body>
+    <div class="container py-5">
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h1 class="display-5 fw-bold text-dark">Contact Manager</h1>
+                <p class="text-muted">Manage your network efficiently</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-12 col-lg-4">
+                <div class="card shadow-sm p-4 sticky-lg-top" style="top: 20px;">
+                    <h3 class="text-primary mb-4">Add New</h3>
                     <form method="POST">
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="btn btn-success w-100">Save Contact</button>
+                        <div class="mb-3">
+                            {{ form.as_p }}
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 shadow-sm">Save Contact</button>
                     </form>
                 </div>
+            </div>
 
-                <h2 class="mb-3">My Contact List</h2>
-                <ul class="list-group shadow-sm"> {% for person in contacts_list %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <strong>{{ person.name }}</strong> <br>
-                                <small class="text-muted">{{ person.phone }} | {{ person.email }}</small>
+            <div class="col-12 col-lg-8">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="h4 mb-0">My Contact List</h2>
+                    <span class="badge bg-secondary">{{ contacts_list|length }} Contacts</span>
+                </div>
+                
+                <div class="list-group shadow-none">
+                    {% for person in contacts_list %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center shadow-sm p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary text-white rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 45px; height: 45px;">
+                                    {{ person.name|first|upper }}
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">{{ person.name }}</h6>
+                                    <small class="text-muted">{{ person.phone }} • {{ person.email }}</small>
+                                </div>
                             </div>
-                            <span class="badge bg-info text-dark rounded-pill">{{ person.category }}</span>
-                        </li>
+                            <span class="badge bg-info text-dark rounded-pill px-3">{{ person.category }}</span>
+                        </div>
                     {% empty %}
-                        <li class="list-group-item text-center">No contacts yet!</li>
+                        <div class="card p-5 text-center shadow-sm">
+                            <p class="text-muted mb-0">No contacts found. Add one to get started!</p>
+                        </div>
                     {% endfor %}
-                </ul>
-
+                </div>
             </div>
         </div>
     </div>
